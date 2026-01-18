@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Pertanahan · SIG Kelurahan Tonja</title>
+    <style>
+        :root {
+            --primary: #0b2c4a;
+            --primary-dark: #061829;
+            --accent-gold: #f4b321;
+            --accent-light: #ffe9a8;
+            --background: #f3f5f9;
+            --text-main: #1f2933;
+        }
+
+        * { box-sizing: border-box; }
+
+        /* ==== BASE + TRANSISI RINGAN ==== */
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+
+            opacity: 0;
+            transform: translateY(8px);
+            animation: bodyFadeIn 380ms ease-out forwards;
+        }
+
+        @keyframes bodyFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body.page-exit {
+            animation: bodyFadeOut 260ms ease-in forwards;
+        }
+
+        @keyframes bodyFadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+        }
+
+        /* OVERLAY TRANSISI RINGAN (CUMA FADE) */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(244,179,33,0.65), transparent 60%),
+                radial-gradient(circle at 90% 100%, rgba(56,189,248,0.55), transparent 60%),
+                linear-gradient(135deg, #020617, #0b2c4a 50%, #020617);
+            opacity: 0;
+            transition: opacity 260ms ease;
+        }
+
+        body.page-exit .page-transition {
+            opacity: 1;
+        }
+
+        a { color: inherit; }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ==== HEADER + NAV (DISAMAKAN DENGAN PROFILE) ==== */
+        header {
+            background:
+                linear-gradient(135deg, rgba(15,23,42,0.95), rgba(6,24,41,0.97)),
+                url("assets/img/atr-bg-1.jpg") center/cover no-repeat;
+            color: #f9fafb;
+            padding: 1.4rem 0 1.8rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+            will-change: background-position;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(244,179,33,0.28), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(15,118,210,0.28), transparent 55%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .header-inner { position: relative; z-index: 1; }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            background: #08243e;
+            box-shadow:
+                0 0 0 3px rgba(244,179,33,0.3),
+                0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text h1 {
+            margin: 0 0 0.1rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .brand-text p {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* FOTO LINGKARAN – SAMA DENGAN index.html & profile.html */
+        .header-photo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-photo-circle {
+            width: 78px;
+            height: 78px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 3px solid var(--accent-gold);
+            background: #0f172a;
+            box-shadow:
+                0 0 0 3px rgba(15,23,42,0.7),
+                0 14px 30px rgba(0,0,0,0.65);
+        }
+
+        .header-photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        nav {
+            margin-top: 0; /* sejajar dengan profile.html */
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 1.6rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-menu a {
+            position: relative;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            padding-bottom: 0.2rem;
+            transition: color 150ms ease-out, transform 150ms ease-out;
+        }
+
+        .nav-menu a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-light));
+            transition: width 170ms ease-out;
+        }
+
+        .nav-menu a:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        /* ==== MAIN ==== */
+        main {
+            padding: 2.4rem 0 3.4rem;
+        }
+
+        .section-heading h2 {
+            margin: 0 0 0.4rem;
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+        }
+
+        .section-heading p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 1.5rem;
+            margin-top: 1.8rem;
+        }
+
+        /* anchor pembungkus card */
+        .news-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .news-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.1rem;
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.08),
+                0 0 0 1px rgba(148,163,184,0.22);
+            display: flex;
+            flex-direction: column;
+            min-height: 210px;
+
+            transition: transform 160ms ease-out, box-shadow 160ms ease-out;
+        }
+
+        .news-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 22px 50px rgba(15,23,42,0.16),
+                0 0 0 1px rgba(148,163,184,0.3);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.6rem;
+            background: #e5e7eb;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-category {
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .news-title {
+            font-size: 0.98rem;
+            margin: 0 0 0.35rem;
+            color: #111827;
+        }
+
+        .news-meta {
+            font-size: 0.76rem;
+            color: #9ca3af;
+            margin-bottom: 0.35rem;
+        }
+
+        .news-text {
+            font-size: 0.87rem;
+            color: #4b5563;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-footer {
+            margin-top: auto;
+            font-size: 0.78rem;
+            color: #6b7280;
+        }
+
+        /* ==== FOOTER ==== */
+        footer {
+            background: var(--primary-dark);
+            color: #e5e7eb;
+            padding: 1.9rem 0 1.4rem;
+            border-top: 1px solid rgba(15,23,42,0.9);
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
+            justify-content: space-between;
+        }
+
+        .footer-address {
+            font-size: 0.88rem;
+            max-width: 440px;
+            color: #cbd5f5;
+        }
+
+        .footer-address strong {
+            font-size: 0.95rem;
+        }
+
+        .footer-social {
+            text-align: right;
+        }
+
+        .footer-social p {
+            margin: 0 0 0.5rem;
+            font-size: 0.84rem;
+            color: #9ca3af;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.55rem;
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 1px solid rgba(148,163,184,0.8);
+            background: radial-gradient(circle at 30% 0, #4b5563 0, #111827 55%, #020617 100%);
+            transition: transform 160ms ease-out, box-shadow 160ms ease-out, border-color 160ms ease-out;
+            overflow: hidden;
+        }
+
+        .social-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* ==== RESPONSIVE ==== */
+        @media (max-width: 900px) {
+            .news-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            .nav-menu {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 780px) {
+            .footer-inner {
+                flex-direction: column;
+            }
+            .footer-social {
+                text-align: left;
+            }
+            .social-icons {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            body {
+                opacity: 1;
+                transform: none;
+            }
+            .page-transition { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-transition"></div>
+
+<header>
+    <div class="container header-inner">
+        <div class="header-top">
+            <!-- BRAND KIRI -->
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="gambar/logo kelurahan.png" alt="Logo ATR/BPN">
+                </div>
+                <div class="brand-text">
+                    <h1>Berita Pertanahan & ATR/BPN</h1>
+                    <p>Kelurahan Tonja · Kota Denpasar</p>
+                </div>
+            </div>
+
+            <!-- FOTO BULAT TENGAH -->
+            <div class="header-photo">
+                <div class="header-photo-circle">
+                    <img src="gambar/baris.png" alt="Foto Profil Kelurahan Tonja">
+                </div>
+            </div>
+
+            <!-- NAV KANAN -->
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="berita.html" class="active">Berita</a></li>
+                    <li><a href="publikasi.html">publikasi</a></li>
+                    <li><a href="petaaa.html">Peta</a></li>
+                    <li><a href="3D fix.html">3D Peta</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="section-heading">
+            <h2>Berita ATR/BPN &amp; Pertanahan Terkini</h2>
+            <p>Berita disusun ulang sebagai arsip lokal SIG Kelurahan Tonja, tanpa membuka situs lain.</p>
+        </div>
+
+        <div class="news-grid">
+            <!-- Berita 1 -->
+            <a href="berita1.html" class="news-card-link">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="gambar/ahy.png" alt="Denpasar Kota Lengkap ATR/BPN">
+                    </div>
+                    <div class="news-category">Kota Lengkap & Sertipikat Elektronik</div>
+                    <h3 class="news-title">Denpasar Mantapkan Status Kota Lengkap dan Dukung Sertipikat Elektronik</h3>
+                    <div class="news-meta">Pemerintah Kota Denpasar · 2024</div>
+                    <p class="news-text">
+                        Setelah ditetapkan sebagai kota lengkap pertama, Denpasar menyiapkan dukungan penuh
+                        terhadap program sertipikat tanah elektronik yang digencarkan Kementerian ATR/BPN,
+                        untuk meningkatkan kepastian hukum dan kualitas layanan pertanahan.
+                    </p>
+                    <div class="news-footer">
+                        <strong>Sumber: Pemkot Denpasar (klik selengkapnya).</strong>
+                    </div>
+                </article>
+            </a>
+
+            <!-- Berita 2 -->
+            <a href="berita2.html" class="news-card-link">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="gambar/Mafia Tanah.png" alt="PTSL dan integritas surveyor">
+                    </div>
+                    <div class="news-category">Integritas & Mafia Tanah</div>
+                    <h3 class="news-title">Menteri Nusron: MASKI Harus Perkuat Integritas Hadapi Mafia Tanah</h3>
+                    <div class="news-meta">Kementerian ATR/BPN · 2025</div>
+                    <p class="news-text">
+                       Denpasar – Menteri Agraria dan Tata Ruang/Kepala Badan Pertanahan Nasional (ATR/BPN), Nusron Wahid, menegaskan pentingnya peran Masyarakat Ahli Survey Kadaster Indonesia (MASKI) sebagai mitra strategis Kementerian ATR/BPN.
+                    </p>
+                    <div class="news-footer">
+                        <strong>Sumber: Kementerian ATR/BPN (klik selengkapnya).</strong>
+                    </div>
+                </article>
+            </a>
+
+            <!-- Berita 3 -->
+            <a href="berita3.html" class="news-card-link">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="gambar/Layanan.png" alt="Layanan pertanahan ATR/BPN">
+                    </div>
+                    <div class="news-category">Layanan Pertanahan</div>
+                    <h3 class="news-title">Layanan Pertanahan 2024 Catat Rekor 8 Juta Berkas</h3>
+                    <div class="news-meta">Tempo.co · 2 Januari 2025</div>
+                    <p class="news-text">
+                        TEMPO.CO, Jakarta - Kementerian Agraria dan Tata Ruang/Badan Pertanahan Nasional (ATR/BPN)mencatatkan rekor dalam layanan pertanahan selama satu dekade terakhir. Sepanjang 2024, layanan pertanahan mencapai 8.058.650 berkas.
+                    </p>
+                    <div class="news-footer">
+                        <strong>Sumber: Tempo.co · 2 Januari 2025 (klik sellengkapnya).</strong>
+                    </div>
+                </article>
+            </a>
+
+            <!-- Berita 4 -->
+            <a href="berita4.html" class="news-card-link">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="gambar/integrasi.png" alt="integrasi data pertanahan">
+                    </div>
+                    <div class="news-category">Integrasi Data Pertanahan</div>
+                    <h3 class="news-title">Kantor Pertanahan Kota Denpasar Percepat PTSL</h3>
+                    <div class="news-meta">Antaranews.com · 26 November 2026</div>
+                    <p class="news-text">
+                        Denpasar (ANTARA) - Pemerintah Kota Denpasar resmi ditetapkan sebagai daerah percontohan integrasi data pertanahan dan perpajakan daerah Nomor Identifikasi Bidang Tanah (NIB), NIK, dan Nomor Objek Pajak (NOP) di Provinsi Bali.
+                    </p>
+                    <div class="news-footer">
+                        <strong>Sumber: Antaranews.com (klik selengkapnya).</strong>
+                    </div>
+                </article>
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-address">
+            <strong>Kelurahan Tonja</strong><br>
+            Kecamatan Denpasar Utara, Kota Denpasar, Provinsi Bali, Indonesia.<br>
+            Terhubung dengan program pertanahan dan tata ruang Kementerian ATR/BPN.
+        </div>
+        <div class="footer-social">
+            <p>Ikuti kanal informasi kami:</p>
+            <div class="social-icons">
+                <a class="social-icon"
+                   href="https://www.instagram.com/kelurahan_tonja/?hl=en"
+                   target="_blank"
+                   aria-label="Instagram Kelurahan Tonja">
+                    <img src="gambar/Instagram.png" alt="Instagram Kelurahan Tonja">
+                </a>
+
+                <a class="social-icon"
+                   href="https://web.facebook.com/kelurahantonjadenut/?_rdc=1&_rdr#"
+                   target="_blank"
+                   aria-label="Facebook Kelurahan Tonja">
+                    <img src="gambar/facebook.png" alt="Facebook Kelurahan Tonja">
+                </a>
+
+                <a class="social-icon"
+                   href="https://www.youtube.com/watch?v=Hrbh9EfuE1k"
+                   target="_blank"
+                   aria-label="YouTube Kelurahan Tonja">
+                    <img src="gambar/youtube.png" alt="YouTube Kelurahan Tonja">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="year"></span> Sistem Informasi Pertanahan Kelurahan Tonja · Arsip berita pertanahan.
+    </div>
+</footer>
+
+<script>
+    // Tahun dinamis di footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // TRANSISI ANTAR HALAMAN (RINGAN, SINKRON 260ms)
+    (function () {
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
+
+        const links = document.querySelectorAll('a[href$=".html"]:not([target="_blank"])');
+        const TRANSITION_MS = 260;
+
+        links.forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (!href || href === '' || href === window.location.pathname.split('/').pop()) {
+                    return;
+                }
+                e.preventDefault();
+                document.body.classList.add('page-exit');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, TRANSITION_MS);
+            });
+        });
+    })();
+
+    // PARALLAX HEADER
+    (function () {
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
+
+        const header = document.querySelector('header');
+        if (!header) return;
+
+        let ticking = false;
+
+        function onScroll() {
+            const scrollY = window.scrollY || window.pageYOffset;
+            const offset = scrollY * 0.3;
+            header.style.backgroundPosition = `center ${-offset}px`;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                window.requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

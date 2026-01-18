@@ -1,0 +1,894 @@
+<!DOCTYPE html> 
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Kelurahan Tonja · SIG Pertanahan</title>
+
+    <style>
+        :root {
+            --primary: #0b2c4a;
+            --primary-dark: #061829;
+            --accent-gold: #f4b321;
+            --accent-light: #ffe9a8;
+            --background: #f3f5f9;
+            --text-main: #1f2933;
+        }
+
+        * { box-sizing: border-box; }
+
+        /* === ANIMASI HALAMAN UTAMA === */
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
+            background: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bodyFadeIn 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes bodyFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(0.99);
+                filter: blur(2px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        body.page-exit {
+            animation: bodyFadeOut 420ms ease-in forwards;
+        }
+
+        @keyframes bodyFadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+                filter: blur(2px);
+            }
+        }
+
+        /* === OVERLAY TRANSISI FUTURISTIK === */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(244,179,33,0.85), transparent 60%),
+                radial-gradient(circle at 90% 100%, rgba(56,189,248,0.75), transparent 60%),
+                linear-gradient(135deg, #020617, #0b2c4a 50%, #020617);
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition:
+                transform 420ms cubic-bezier(0.65, 0, 0.35, 1),
+                opacity 420ms ease;
+        }
+
+        body.page-exit .page-transition {
+            opacity: 1;
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            background:
+                linear-gradient(135deg, rgba(15,23,42,0.9), rgba(6,24,41,0.98)),
+                url("assets/img/atr-bg-1.jpg") center/cover no-repeat;
+            padding: 1.4rem 0 0.6rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(244,179,33,0.25), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(15,118,210,0.25), transparent 55%);
+            pointer-events: none;
+        }
+
+        .header-inner { position: relative; z-index: 2; }
+
+        /* BRAND + NAV DALAM SATU BARIS */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            background: #08243e;
+            box-shadow: 0 0 0 3px rgba(244,179,33,0.25);
+        }
+
+        .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .brand-text p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: .9;
+        }
+
+        /* FOTO BULAT DI TENGAH (PENGGANTI SOSMED) */
+        .header-photo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-photo-circle {
+            width: 78px;
+            height: 78px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 3px solid var(--accent-gold);
+            background: #e5e7eb;
+            box-shadow:
+                0 0 0 3px rgba(15,23,42,0.65),
+                0 14px 30px rgba(0,0,0,0.55);
+        }
+
+        .header-photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* SOSMED (DIPAKAI DI FOOTER) */
+        .social-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+        }
+
+        .social-links a {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: rgba(15,23,42,0.6);
+            box-shadow: 0 0 0 1px rgba(248,250,252,0.75);
+            text-decoration: none;
+            transition: transform 150ms ease-out, box-shadow 150ms ease-out, background 150ms ease-out;
+        }
+
+        .social-links a img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-1px) scale(1.03);
+            background: rgba(15,23,42,0.9);
+            box-shadow: 0 0 0 1px rgba(248,250,252,0.95), 0 6px 12px rgba(15,23,42,0.45);
+        }
+
+        /* NAV */
+        nav {
+            margin-top: 0;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 1.6rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-menu a {
+            color: #e5e7eb;
+            font-size: 0.9rem;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            font-weight: 500;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 0.2rem;
+            transition: color 160ms ease-out, transform 160ms ease-out;
+        }
+
+        .nav-menu a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-light));
+            transition: width 180ms ease-out;
+        }
+
+        .nav-menu a:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after { width: 100%; }
+
+        /* === VIDEO BANNER: 1130.mp4 === */
+        .hero-video-wrap {
+            position: relative;
+            z-index: 1;
+            margin-top: 1.4rem;
+            max-height: 680px;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 680px;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            animation: videoFadeIn 900ms 220ms cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+
+        @keyframes videoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(1.04);
+                filter: blur(2px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom,
+                    rgba(15,23,42,0.3),
+                    rgba(15,23,42,0.75));
+            pointer-events: none;
+        }
+
+        /* === MAIN === */
+        main { padding: 2.4rem 0 3.2rem; }
+
+        .section-heading h2 {
+            font-size: 1.4rem;
+            margin: 0 0 .3rem;
+            color: var(--primary-dark);
+        }
+
+        .section-heading p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.92rem;
+        }
+
+        .two-column {
+            margin-top: 1.8rem;
+            display: grid;
+            grid-template-columns: 2.3fr 1.7fr;
+            gap: 1.5rem;
+        }
+
+        /* CARD UTAMA + ANIMASI FLOAT-IN */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.35rem;
+            box-shadow:
+                0 22px 50px rgba(15,23,42,0.12),
+                0 0 0 1px rgba(148,163,184,0.22);
+        }
+
+        .card-main {
+            opacity: 0;
+            transform: translateX(-18px) translateY(8px);
+            animation: cardInLeft 680ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
+        }
+
+        .card-side {
+            opacity: 0;
+            transform: translateX(18px) translateY(8px);
+            animation: cardInRight 680ms cubic-bezier(0.16, 1, 0.3, 1) 220ms forwards;
+        }
+
+        @keyframes cardInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-22px) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        @keyframes cardInRight {
+            from {
+                opacity: 0;
+                transform: translateX(22px) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        .card ul { margin-top: .5rem; padding-left: 1.2rem; }
+
+        .card li { margin-bottom: .3rem; }
+
+        /* === ANIMASI TEKS DALAM CARD MAIN (EFEK POWERPOINT) === */
+        @keyframes revealItem {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-main > * {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: revealItem 600ms cubic-bezier(0.2, 0.9, 0.25, 1) forwards;
+        }
+
+        .card-main > *:nth-child(1) { animation-delay: 260ms; }
+        .card-main > *:nth-child(2) { animation-delay: 380ms; }
+        .card-main > *:nth-child(3) { animation-delay: 520ms; }
+        .card-main > *:nth-child(4) { animation-delay: 640ms; }
+        .card-main > *:nth-child(5) { animation-delay: 780ms; }
+        .card-main > *:nth-child(6) { animation-delay: 900ms; }
+        .card-main > *:nth-child(7) { animation-delay: 1040ms; }
+        .card-main > *:nth-child(8) { animation-delay: 1160ms; }
+        .card-main > *:nth-child(9) { animation-delay: 1300ms; }
+        .card-main > *:nth-child(10){ animation-delay: 1440ms; }
+        .card-main > *:nth-child(11){ animation-delay: 1580ms; }
+        .card-main > *:nth-child(12){ animation-delay: 1720ms; }
+
+        /* SIDEBAR: FOTO UTAMA */
+        .photo-box {
+            border-radius: 14px;
+            overflow: hidden;
+            background: #e5e7eb;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+            margin-bottom: 1rem;
+        }
+        .photo-box img {
+            width: 100%;
+            height: 220px;           /* tinggi fix */
+            object-fit: cover;
+            display: block;
+        }
+
+        /* === VIDEO PROFIL (YouTube) – SAMA UKURAN DENGAN FOTO === */
+        .yt-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;           /* match dengan photo-box */
+            border-radius: 14px;
+            overflow: hidden;
+            margin-top: 1rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+            background: #000;
+        }
+
+        .yt-wrapper iframe,
+        .yt-wrapper video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            object-fit: cover;
+        }
+
+        .small-meta {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.4rem;
+        }
+
+        /* === GALERI 4 FOTO BESAR === */
+        .mini-gallery {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 0.7rem;
+        }
+
+        .mini-thumb {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #cfd3d8;
+            box-shadow: 0 10px 25px rgba(15,23,42,0.13);
+            transition: transform 160ms ease-out, box-shadow 160ms ease-out;
+        }
+
+        .mini-thumb img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            cursor: zoom-in;
+        }
+
+        .mini-thumb:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.23);
+        }
+
+        .mini-caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.75rem;
+            color: #f9fafb;
+            background: linear-gradient(to top, rgba(15,23,42,0.85), transparent);
+        }
+
+        /* === LIGHTBOX / ZOOM GALLERY FULLSCREEN + CAPTION === */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 300ms ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100vw;
+            max-height: 100vh;
+            padding: 10px;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: zoomIn 350ms cubic-bezier(0.16,1,0.3,1);
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            margin-top: 12px;
+            color: #f1f5f9;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 500;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 28px;
+            right: 32px;
+            font-size: 2.2rem;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            z-index: 100000;
+            font-weight: 300;
+            transition: opacity 180ms ease;
+        }
+
+        .lightbox-close:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 900px) {
+            .two-column { grid-template-columns: 1fr; }
+            .hero-video { height: 260px; }
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            nav {
+                width: 100%;
+            }
+            .nav-menu {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .mini-gallery { grid-template-columns: 1fr; }
+            .mini-thumb img { height: 200px; }
+        }
+
+        footer {
+            background: var(--primary-dark);
+            padding: 1.8rem 0 1.3rem;
+            color: #e5e7eb;
+            margin-top: 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        footer .social-links {
+            margin-bottom: 0.7rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            body { opacity: 1; transform: none; }
+            .page-transition { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-transition"></div>
+
+<header>
+    <div class="container header-inner">
+        <div class="header-top">
+            <!-- BRAND KIRI -->
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="gambar/logo kelurahan.png" alt="Logo ATR/BPN">
+                </div>
+                <div class="brand-text">
+                    <h1>Profil Kelurahan Tonja</h1>
+                    <p>Informasi Pertanahan · Denpasar Utara</p>
+                </div>
+            </div>
+
+            <!-- FOTO BULAT TENGAH (PENGGANTI SOSMED) -->
+            <div class="header-photo">
+                <div class="header-photo-circle">
+                    <!-- Ganti src ini dengan foto yang kamu inginkan -->
+                    <img src="gambar/baris.png" alt="Foto Profil Kelurahan Tonja">
+                </div>
+            </div>
+
+            <!-- NAV KANAN -->
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a class="active" href="profile.html">Profile</a></li>
+                    <li><a href="berita.html">Berita</a></li>
+                    <li><a href="publikasi.html">Publikasi</a></li>
+                    <li><a href="petaaa.html">Peta</a></li>
+                    <li><a href="3D fix.html">3D Peta</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- VIDEO BANNER: autoplay + loop -->
+    <div class="hero-video-wrap">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="gambar/1130.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="section-heading">
+            <h2>Profil Kelurahan Tonja</h2>
+            <p>Profil wilayah, demografi, dan informasi pertanahan berbasis SIG.</p>
+        </div>
+
+        <div class="two-column">
+
+            <!-- === KONTEN KIRI === -->
+            <section class="card card-main">
+                <h3>Gambaran Umum</h3>
+                <p>
+                    Kelurahan Tonja berada di <strong>Kecamatan Denpasar Utara</strong>, Kota Denpasar.
+                    Wilayah seluas ± 2,30 km² ini berpenduduk lebih dari 20 ribu jiwa dan menjadi
+                    kawasan permukiman padat dengan aktivitas ekonomi dan sosial masyarakat yang beragam.
+                </p>
+
+                <h3>Administrasi & Pertanahan</h3>
+                <p>
+                    Kelurahan Tonja berperan sebagai mitra masyarakat dalam layanan pertanahan dan tata ruang:
+                </p>
+                <ul>
+                    <li>Pendampingan kegiatan pengukuran & pemetaan bidang tanah.</li>
+                    <li>Koordinasi dengan Kantor Pertanahan Kota Denpasar.</li>
+                    <li>Mendukung pelaksanaan program PTSL.</li>
+                    <li>Menyampaikan informasi spasial di tingkat kelurahan.</li>
+                </ul>
+
+                <h3>Program Pertanahan</h3>
+                <p>
+                    Program yang berjalan di Tonja meliputi:
+                </p>
+                <ul>
+                    <li>PTSL (Pendaftaran Tanah Sistematis Lengkap).</li>
+                    <li>Konsolidasi pertanahan wilayah perkotaan.</li>
+                    <li>Digitalisasi data pertanahan.</li>
+                    <li>Pemetaan SIG Kelurahan untuk mendukung Kota Lengkap.</li>
+                </ul>
+
+                <h3>Rencana Pengembangan SIG & Layanan Digital</h3>
+                <p>
+                    Ke depan, SIG Kelurahan Tonja dirancang tidak hanya sebagai peta informasi,
+                    tetapi sebagai <strong>dashboard layanan pertanahan</strong> yang terintegrasi
+                    dengan sistem kota dan Kementerian ATR/BPN. Beberapa arah pengembangan yang
+                    dapat dilakukan antara lain:
+                </p>
+                <ul>
+                    <li>Integrasi data bidang tanah hasil PTSL dengan status sertipikat dan penggunaan tanah.</li>
+                    <li>Penambahan layer tematik (banjir, fasilitas umum, RTH) untuk mendukung perencanaan.</li>
+                    <li>Fitur pencarian bidang berdasarkan NOP atau identitas internal lainnya.</li>
+                    <li>Tampilan publik yang ramah warga tanpa menampilkan data rahasia.</li>
+                    <li>Sinkronisasi dengan aplikasi pelayanan digital Pemkot Denpasar (mis. e-Sewaka).</li>
+                </ul>
+                <p>
+                    Dengan pengembangan tersebut, SIG Kelurahan Tonja diharapkan menjadi rujukan data spasial
+                    tingkat kelurahan yang mendukung transparansi pelayanan, pengambilan keputusan, dan edukasi
+                    masyarakat mengenai penataan ruang dan pertanahan.
+                </p>
+            </section>
+
+            <!-- === SIDEBAR KANAN === -->
+            <aside class="card card-side">
+
+                <!-- FOTO UTAMA -->
+                <div class="photo-box">
+                    <img src="gambar/tonja.png" alt="Kantor Kelurahan Tonja di Denpasar Utara">
+                </div>
+
+                <h3>Data Singkat Kelurahan Tonja</h3>
+                <ul>
+                    <li><strong>Luas Wilayah:</strong> ± 2,30 km²</li>
+                    <li><strong>Penduduk:</strong> ± 20.300 jiwa</li>
+                    <li><strong>Alamat:</strong> Jl. Seroja No. 27, Denpasar Utara</li>
+                    <li><strong>Kode Pos:</strong> 80239</li>
+                </ul>
+
+                <h3>Video Profil Kelurahan Tonja</h3>
+
+                <!-- YouTube, ukuran sama dengan foto di atas -->
+                <div class="yt-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/Hrbh9EfuE1k?start=0&end=30&rel=0&modestbranding=1"
+                        title="Video Profil Kelurahan Tonja"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <p class="small-meta">
+                    Video kegiatan dan profil Kelurahan Tonja sebagai edukasi bagi masyarakat.
+                </p>
+
+                <!-- GALERI FOTO 4 BESAR -->
+                <h3>Galeri Kelurahan Tonja</h3>
+
+                <div class="mini-gallery">
+                    <div class="mini-thumb">
+                        <img src="gambar/puputan.png" alt="Lapangan Puputan Badung di Denpasar">
+                        <div class="mini-caption">Lapangan Puputan Badung</div>
+                    </div>
+
+                    <div class="mini-thumb">
+                        <img src="gambar/bajra.jpg" alt="Monumen Bajra Sandhi Renon">
+                        <div class="mini-caption">Monumen Bajra Sandhi</div>
+                    </div>
+
+                    <div class="mini-thumb">
+                        <img src="gambar/Taman Kota.png" alt="Taman Kota Denpasar">
+                        <div class="mini-caption">Taman Kota Denpasar</div>
+                    </div>
+
+                    <div class="mini-thumb">
+                        <img src="gambar/kerja 2.png" alt="Kegiatan Warga Kelurahan Tonja">
+                        <div class="mini-caption">Kegiatan Warga Tonja</div>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+</main>
+
+<!-- LIGHTBOX OVERLAY -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+        <img id="lightbox-img" src="" alt="Pratinjau gambar Kelurahan Tonja">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+</div>
+
+<footer>
+    <div class="social-links">
+        <a href="https://www.instagram.com/kelurahan_tonja/?hl=en"
+           target="_blank"
+           aria-label="Instagram Kelurahan Tonja">
+            <img src="gambar/Instagram.png" alt="Instagram Kelurahan Tonja">
+        </a>
+
+        <a href="https://web.facebook.com/kelurahantonjadenut/?_rdc=1&_rdr#"
+           target="_blank"
+           aria-label="Facebook Kelurahan Tonja">
+            <img src="gambar/facebook.png" alt="Facebook Kelurahan Tonja">
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=Hrbh9EfuE1k"
+           target="_blank"
+           aria-label="YouTube Kelurahan Tonja">
+            <img src="gambar/youtube.png" alt="YouTube Kelurahan Tonja">
+        </a>
+    </div>
+    <p>&copy; <span id="year"></span> SIP Kelurahan Tonja · Pertanahan & Tata Ruang</p>
+</footer>
+
+<script>
+    // tahun dinamis
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // animasi transition antar halaman + overlay futuristik
+    (function () {
+        const links = document.querySelectorAll('a[href$=".html"]:not([target="_blank"])');
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const TRANSITION_MS = 420;
+
+        if (prefersReduced) return;
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                const href = this.getAttribute("href");
+                if (!href || href === "" || href === window.location.pathname.split("/").pop()) return;
+
+                e.preventDefault();
+                document.body.classList.add("page-exit");
+                setTimeout(() => { window.location = href; }, TRANSITION_MS);
+            });
+        });
+    })();
+
+    // parallax header
+    (function () {
+        const header = document.querySelector("header");
+        if (!header) return;
+
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
+
+        let ticking = false;
+        function onScroll() {
+            const y = window.scrollY || window.pageYOffset;
+            const offset = y * 0.30;
+            header.style.backgroundPosition = `center ${-offset}px`;
+            ticking = false;
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        });
+    })();
+
+    // LIGHTBOX GALERI FULLSCREEN + CAPTION
+    (function () {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeBtn = document.querySelector('.lightbox-close');
+        if (!lightbox || !lightboxImg) return;
+
+        document.querySelectorAll('.mini-thumb img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+
+                if (lightboxCaption) {
+                    const captionEl = img.nextElementSibling;
+                    lightboxCaption.textContent = captionEl ? captionEl.textContent : "";
+                }
+
+                lightbox.classList.add('active');
+            });
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+        }
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

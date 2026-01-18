@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Peta ArcGIS - Kecamatan Abang</title>
+
+  <style>
+    :root { --accent-gold: #f4b321; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #061426;
+      font-family: system-ui, sans-serif;
+      color: #fff;
+    }
+
+    /* ===== HEADER ===== */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.6rem 0;
+      background: linear-gradient(to bottom,
+        rgba(6, 20, 38, 0.95),
+        rgba(6, 20, 38, 0.7)
+      );
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid var(--accent-gold);
+      background: #020617;
+      flex: 0 0 auto;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      margin: 0;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      color: #cfd8fa;
+      line-height: 1.2;
+    }
+
+    .header-photo-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.8);
+      background: #020617;
+      flex: 0 0 auto;
+    }
+
+    .header-photo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.07em;
+      position: relative;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 2px;
+      background: var(--accent-gold);
+      transition: 0.2s;
+    }
+
+    nav a:hover::after,
+    nav a.active::after { width: 100%; }
+
+    /* ===== MAIN CONTENT ===== */
+    main {
+      padding: 28px 0 40px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin: 20px 0 22px;
+    }
+
+    .page-title h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: 0.02em;
+    }
+
+    .page-title p {
+      margin: 8px 0 0;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      margin: 0 auto 26px;
+    }
+
+    .card-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Responsive iframe wrapper */
+    .iframe-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer.site-footer {
+      padding: 0.8rem 0;
+      text-align: center;
+      color: #fff;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(6,20,38,0.95);
+    }
+
+    .social-links img {
+      width: 26px;
+      margin: 0 6px;
+      transition: 0.2s;
+    }
+
+    .social-links img:hover { transform: scale(1.1); }
+
+    @media (max-width: 720px) {
+      .brand-text p { display: none; }
+      .header-photo-circle { display: none; }
+      nav a { font-size: 0.75rem; }
+      .page-title h2 { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER SITUS -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="header-top">
+
+        <div class="brand">
+          <div class="brand-logo">
+            <img src="./gambar/LOGO.png" alt="Logo ATR/BPN">
+          </div>
+
+          <div class="brand-text">
+            <h1>Peta Kecamatan Abang</h1>
+            <p>ArcGIS Online - 3D Viewer & Map Viewer</p>
+          </div>
+        </div>
+
+        <div class="header-photo">
+          <div class="header-photo-circle">
+            <img src="./gambar/baris.png" alt="Kecamatan Abang">
+          </div>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="./index.html" target="_self">Home</a></li>
+            <li><a href="./profile.html" target="_self">Profile</a></li>
+            <li><a href="./berita.html" target="_self">Berita</a></li>
+            <li><a href="./publikasi.html" target="_self">Publikasi</a></li>
+            <li><a class="active" href="./peta.html" target="_self">Peta</a></li>
+            <li><a href="./3D.html" target="_self">3D Peta</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <div class="page-title">
+        <h2>Embed ArcGIS Online</h2>
+        <p>Silakan gunakan tampilan 3D Viewer dan Map Viewer di bawah ini.</p>
+      </div>
+
+      <!-- CARD 3D -->
+      <section class="card">
+        <div class="card-header">
+          <h3>3D Viewer (Instant Apps)</h3>
+          <div class="hint">Tips: pakai tombol fullscreen di dalam peta</div>
+        </div>
+        <div class="iframe-wrap">
+          <iframe
+            src="https://arcg.is/a8qX1"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+
+      <!-- CARD 2D -->
+      <section class="card">
+        <div class="card-header">
+          <h3>Map Viewer (Web Map)</h3>
+          <div class="hint">Tips: zoom + layer ada di panel ArcGIS</div>
+        </div>
+        <div class="iframe-wrap">
+          <iframe
+            src="https://www.arcgis.com/apps/mapviewer/index.html?webmap=d90237e9cdee4256a7c7f587549e75d1"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER SITUS -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://www.instagram.com/kelurahan_tonja/?hl=en" target="_blank" rel="noopener">
+          <img src="./gambar/Instagram.png" alt="Instagram">
+        </a>
+        <a href="https://web.facebook.com/kelurahantonjadenut/?_rdc=1&_rdr" target="_blank" rel="noopener">
+          <img src="./gambar/facebook.png" alt="Facebook">
+        </a>
+        <a href="https://www.youtube.com/watch?v=Hrbh9EfuE1k" target="_blank" rel="noopener">
+          <img src="./gambar/youtube.png" alt="YouTube">
+        </a>
+      </div>
+      <p>&copy; <span id="year"></span> SIP Kecamatan Abang · Pertanahan & Tata Ruang</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

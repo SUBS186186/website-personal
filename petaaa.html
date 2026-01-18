@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Peta Tutupan Lahan Kelurahan Tonja</title>
+
+    <style>
+        :root {
+            --accent-gold: #f4b321;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        /* IFRAME WEBSIG BARU */
+        #mapframe {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 0;
+        }
+
+        /* HEADER FIXED */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0.6rem 0;
+            background: linear-gradient(to bottom,
+                rgba(6, 20, 38, 0.9),
+                rgba(6, 20, 38, 0.4),
+                transparent
+            );
+            backdrop-filter: blur(8px);
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            background: #020617;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 1rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .brand-text p {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.85;
+            color: #cfd8fa;
+        }
+
+        /* FOTO BULAT TENGAH */
+        .header-photo-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.8);
+            background: #020617;
+        }
+
+        .header-photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* NAVIGASI */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #e5e7eb;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.07em;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        nav a.active {
+            color: #fff;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: 0.2s;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* FOOTER */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0.6rem;
+            text-align: center;
+            color: #fff;
+            font-size: 0.8rem;
+            background: linear-gradient(
+                to top,
+                rgba(6,20,38,0.9),
+                rgba(6,20,38,0.4),
+                transparent
+            );
+            backdrop-filter: blur(6px);
+        }
+
+        .social-links img {
+            width: 26px;
+            margin: 0 6px;
+            transition: 0.2s;
+        }
+
+        .social-links img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- IFRAME PETA BARU -->
+    <iframe id="mapframe" src="peta/petafix.html"></iframe>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-inner">
+            <div class="header-top">
+
+                <div class="brand">
+                    <div class="brand-logo"><img src="gambar/logo kelurahan.png"></div>
+                    <div class="brand-text">
+                        <h1>Peta SIG Kelurahan Tonja</h1>
+                        <p>Sistem Informasi Pertanahan · Denpasar Utara</p>
+                    </div>
+                </div>
+
+                <div class="header-photo">
+                    <div class="header-photo-circle"><img src="gambar/baris.png"></div>
+                </div>
+
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="berita.html">Berita</a></li>
+                        <li><a href="publikasi.html">Publikasi</a></li>
+                        <li><a class="active" href="peta.html">Peta</a></li>
+                        <li><a href="3D fix.html">3D Peta</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/kelurahan_tonja/?hl=en" target="_blank">
+                <img src="gambar/Instagram.png">
+            </a>
+            <a href="https://web.facebook.com/kelurahantonjadenut/?_rdc=1&_rdr" target="_blank">
+                <img src="gambar/facebook.png">
+            </a>
+            <a href="https://www.youtube.com/watch?v=Hrbh9EfuE1k" target="_blank">
+                <img src="gambar/youtube.png">
+            </a>
+        </div>
+        <p>&copy; <span id="year"></span> SIP Kelurahan Tonja · Pertanahan & Tata Ruang</p>
+    </footer>
+
+<script>
+    // Tahun Otomatis
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ***** INJECT CSS agar kontrol peta tidak tertutup header *****
+    document.getElementById("mapframe").addEventListener("load", function () {
+        const iframe = this;
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+        // CSS injeksi untuk OpenLayers Control
+        const css = `
+            .ol-control {
+                margin-top: 120px !important; /* DORONG semua kontrol peta turun */
+            }
+        `;
+
+        const style = doc.createElement("style");
+        style.innerHTML = css;
+        doc.head.appendChild(style);
+    });
+</script>
+
+</body>
+</html>

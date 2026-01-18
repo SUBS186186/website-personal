@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <title>Peta 3D Building Kelurahan Tonja</title>
+
+  <style>
+    :root {
+      --accent-gold: #f4b321;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      font-family: system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    /* IFRAME WEBSIG BARU */
+    #mapframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+    }
+
+    /* HEADER FIXED */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0.6rem 0;
+      background: linear-gradient(to bottom,
+        rgba(6, 20, 38, 0.9),
+        rgba(6, 20, 38, 0.4),
+        transparent
+      );
+      backdrop-filter: blur(8px);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* ===========================
+       ✅ BLUR KHUSUS AREA ATAS (LOGO + TULISAN)
+       (tanpa blur panjang/full header)
+    ============================ */
+    .header-top {
+      background: linear-gradient(
+        to bottom,
+        rgba(6, 20, 38, 0.65),
+        rgba(6, 20, 38, 0.30)
+      );
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+
+    /* biar teks makin kebaca */
+    .brand-text h1,
+    .brand-text p {
+      text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid var(--accent-gold);
+      background: #020617;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .brand-text p {
+      margin: 0;
+      font-size: 0.8rem;
+      opacity: 0.85;
+      color: #cfd8fa;
+    }
+
+    /* FOTO BULAT TENGAH */
+    .header-photo-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.8);
+      background: #020617;
+    }
+
+    .header-photo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* NAVIGASI */
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.07em;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    nav a.active {
+      color: #fff;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 2px;
+      background: var(--accent-gold);
+      transition: 0.2s;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+
+    /* FOOTER */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0.6rem;
+      text-align: center;
+      color: #fff;
+      font-size: 0.8rem;
+      background: linear-gradient(
+        to top,
+        rgba(6,20,38,0.9),
+        rgba(6,20,38,0.4),
+        transparent
+      );
+    }
+
+    .social-links img {
+      width: 26px;
+      margin: 0 6px;
+      transition: 0.2s;
+    }
+
+    .social-links img:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===========================
+       ✅ FORCE OVERRIDE (PASTI HILANG)
+       taruh PALING BAWAH biar menang
+    ============================ */
+    header {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    footer {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* ===========================
+       ✅ POPUP OVERLAY (6cm di bawah tulisan "3D PETA")
+       (posisi fixed; tinggal geser right jika perlu)
+    ============================ */
+    .start-hint-overlay {
+      position: fixed;
+
+      /* 6 cm di bawah area atas */
+      top: calc(12px + 6cm);
+
+      /* dekat kolom tombol (+ rumah -) di kanan */
+      right: 92px;   /* geser kalau perlu: 70px - 120px */
+      left: auto;
+
+      background: rgba(6, 20, 38, 0.88);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(244, 179, 33, 0.65);
+      font-size: 0.82rem;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+      z-index: 999999;
+      animation: hintFloat2 1.4s ease-in-out infinite;
+    }
+
+    /* panah kecil mengarah ke kanan (ke tombol) */
+    .start-hint-overlay::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      left: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 8px 0 8px 8px;
+      border-style: solid;
+      border-color: transparent transparent transparent rgba(6, 20, 38, 0.88);
+    }
+
+    @keyframes hintFloat2 {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-6px); }
+    }
+
+    .start-hint-overlay.hide {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- IFRAME PETA BARU (CESIUM 3D) -->
+  <iframe
+    id="mapframe"
+    title="Denpasar 3D"
+    src="https://ion.cesium.com/stories/viewer/?id=b4f92edd-f827-4417-8565-52c9f1f44bd8"
+    frameborder="0"
+    allow="fullscreen"
+    allowfullscreen="true"
+    mozallowfullscreen="true"
+    webkitallowfullscreen="true">
+  </iframe>
+
+  <!-- POPUP overlay -->
+  <div id="startHintOverlay" class="start-hint-overlay" role="button" aria-label="Klik untuk memulai">
+    klik untuk memulai
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <div class="header-top">
+
+        <div class="brand">
+          <div class="brand-logo"><img src="gambar/logo kelurahan.png" alt="Logo Kelurahan"></div>
+          <div class="brand-text">
+            <h1>Peta 3D Building Kelurahan tonja</h1>
+            <p>Sistem Informasi Pertanahan · Keluruhan Tonja</p>
+          </div>
+        </div>
+
+        <div class="header-photo">
+          <div class="header-photo-circle"><img src="gambar/baris.png" alt="Foto"></div>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="berita.html">Berita</a></li>
+            <li><a href="petaaa.html">Peta</a></li>
+            <li><a href="3D fix.html">3D Peta</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="social-links">
+      <a href="https://www.instagram.com/kelurahan_tonja/?hl=en" target="_blank" rel="noopener">
+        <img src="gambar/Instagram.png" alt="Instagram">
+      </a>
+      <a href="https://web.facebook.com/kelurahantonjadenut/?_rdc=1&_rdr" target="_blank" rel="noopener">
+        <img src="gambar/facebook.png" alt="Facebook">
+      </a>
+      <a href="https://www.youtube.com/watch?v=Hrbh9EfuE1k" target="_blank" rel="noopener">
+        <img src="gambar/youtube.png" alt="YouTube">
+      </a>
+    </div>
+    <p>&copy; <span id="year"></span> SIP Kelurahan Tonja · Pertanahan & Tata Ruang</p>
+  </footer>
+
+  <script>
+    // Tahun Otomatis
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // POPUP overlay: klik untuk memulai (hilang setelah diklik + simpan localStorage)
+    (function () {
+      const hint = document.getElementById("startHintOverlay");
+      if (!hint) return;
+
+      // kalau sudah pernah diklik, jangan tampilkan lagi
+      if (localStorage.getItem("startHintDismissed") === "1") {
+        hint.classList.add("hide");
+        return;
+      }
+
+      hint.addEventListener("click", function () {
+        hint.classList.add("hide");
+        localStorage.setItem("startHintDismissed", "1");
+      });
+    })();
+
+    // Reset manual (kalau butuh):
+    // localStorage.removeItem("startHintDismissed"); location.reload();
+
+    // ***** INJECT CSS agar kontrol peta tidak tertutup header *****
+    // NOTE: Ini biasanya akan gagal karena iframe beda domain (same-origin policy).
+    // Dibungkus try/catch supaya tidak bikin script lain gagal.
+    document.getElementById("mapframe").addEventListener("load", function () {
+      try {
+        const iframe = this;
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+        const css = `
+          .ol-control {
+            margin-top: 120px !important;
+          }
+        `;
+
+        const style = doc.createElement("style");
+        style.innerHTML = css;
+        doc.head.appendChild(style);
+      } catch (e) {
+        console.warn("Tidak bisa inject CSS ke iframe (beda domain).", e);
+      }
+    });
+  </script>
+
+</body>
+</html>

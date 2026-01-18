@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentri Nusron: MASKI Harus Perkuat Integritas · SIG Tonja</title>
+    <style>
+        :root {
+            --primary: #0b2c4a;
+            --primary-dark: #061829;
+            --accent-gold: #f4b321;
+            --accent-light: #ffe9a8;
+            --background: #f3f5f9;
+            --text-main: #1f2933;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.7;
+
+            opacity: 0;
+            transform: translateY(8px);
+            animation: bodyFadeIn 520ms ease-out forwards;
+        }
+
+        @keyframes bodyFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body.page-exit {
+            animation: bodyFadeOut 320ms ease-in forwards;
+        }
+
+        @keyframes bodyFadeOut {
+            to { opacity: 0; transform: translateY(8px); }
+        }
+
+        a { color: inherit; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* HEADER SIMPLE (selaras dengan berita 1) */
+        header {
+            background:
+                linear-gradient(135deg, rgba(15,23,42,0.95), rgba(6,24,41,0.97)),
+                url("assets/img/atr-bg-1.jpg") center/cover no-repeat;
+            color: #f9fafb;
+            padding: 1.3rem 0 1.6rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+            will-change: background-position;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(244,179,33,0.28), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(15,118,210,0.28), transparent 55%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .header-inner { position: relative; z-index: 1; }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            background: #08243e;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text h1 {
+            margin: 0 0 0.1rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .brand-text p {
+            margin: 0;
+            font-size: 0.78rem;
+            opacity: .9;
+        }
+
+        nav {
+            margin-top: 0.7rem;
+            border-top: 1px solid rgba(148,163,184,0.4);
+            border-bottom: 1px solid rgba(15,23,42,0.8);
+            background: linear-gradient(to right, rgba(15,23,42,0.85), rgba(6,24,41,0.94));
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0.35rem 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            position: relative;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-size: 0.86rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            padding-bottom: 0.2rem;
+        }
+
+        .nav-menu a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-light));
+            transition: width 170ms ease-out;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #ffffff;
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after { width: 100%; }
+
+        /* MAIN ARTICLE */
+        main {
+            padding: 2.4rem 0 3.4rem;
+        }
+
+        .article-meta {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-category {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        h2.article-title {
+            margin: 0.2rem 0 0.5rem;
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .article-cover {
+            margin: 1rem 0 1.4rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.12),
+                0 0 0 1px rgba(148,163,184,0.18);
+        }
+
+        .article-cover img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* paragraf berita -> JUSTIFY (sama dengan berita1) */
+        .article-body p {
+            margin-top: 0.2rem;
+            margin-bottom: 0.9rem;
+            font-size: 0.93rem;
+            color: #374151;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .article-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article-source {
+            margin-top: 1.3rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 0.7rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: var(--primary-dark);
+            margin-bottom: 0.9rem;
+        }
+
+        .back-link span {
+            font-size: 1.1rem;
+        }
+
+        /* FOOTER SIMPLE */
+        footer {
+            background: var(--primary-dark);
+            color: #e5e7eb;
+            padding: 1.6rem 0 1.3rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            body { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container header-inner">
+        <div class="header-top">
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="gambar/LOGO.png" alt="Logo ATR/BPN">
+                </div>
+                <div class="brand-text">
+                    <h1>Berita Pertanahan & ATR/BPN</h1>
+                    <p>Kelurahan Tonja · Kota Denpasar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="berita.html" class="active">Berita</a></li>
+                <li><a href="publikasi.html">publikasi</a></li>
+                <li><a href="petaaa.html">Peta</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        <a href="berita.html" class="back-link">
+            <span>←</span> Kembali ke daftar berita
+        </a>
+
+        <div class="article-category">Integrasi data Pertanahan</div>
+        <h2 class="article-title">Pemkot Denpasar jadi contoh integrasi data pertanahan dan pajak daerahs</h2>
+        <div class="article-meta">Antaranews.com · 26 November 2025</div>
+
+        <div class="article-cover">
+            <img src="gambar/integrasi.png" alt="Integritas dan mafia tanah">
+        </div>
+
+        <div class="article-body">
+            <p>
+                Denpasar (ANTARA) - Pemerintah Kota Denpasar resmi ditetapkan sebagai daerah percontohan integrasi data pertanahan dan perpajakan daerah Nomor Identifikasi Bidang Tanah (NIB), NIK, dan Nomor Objek Pajak (NOP) di Provinsi Bali. Peluncuran program itu ditandai dengan hand scan oleh Gubernur Bali Wayan Koster, Wakil Wali Kota Denpasar I Kadek Agus Arya Wibawa, dan Kakanwil BPN Provinsi Bali I Made Daging dalam rapat koordinasi akhir Gugus Tugas Reforma Agraria <strong>(GTRA)</strong> di Gedung Wisma Sabha, Kantor Gubernur Provinsi Bali, Rabu. Wakil Wali Kota Denpasar I Kadek Agus Arya Wibawa menyampaikan terima kasih atas penunjukan Kota Denpasar sebagai pilot project integrasi data pertanahan dan perpajakan ini.
+            </p>
+            <p>
+                Menurut dia, program integrasi NIB, NIK, dan NOP akan memberikan banyak manfaat strategis bagi pemerintah daerah dan masyarakat. “Integrasi data ini memberikan manfaat signifikan, termasuk peningkatan <strong>Pendapatan Asli Daerah (PAD)</strong> serta peningkatan akurasi dan validasi data,” ujarnya.Pada kesempatan yang sama, Pemerintah Kota Denpasar juga menerima dua bidang sertifikat tanah, masing-masing berupa Hak Pakai dan Hak Pengelolaan, yang diserahkan langsung oleh Menteri Agraria dan Tata Ruang/Kepala Badan Pertanahan Nasional (ATR/BPN) Republik Indonesia, Nusron Wahid.Arya Wibawa memastikan dua bidang sertifikat yang diterima Kota Denpasar akan dimanfaatkan untuk pembangunan fasilitas publik. “Tanah ini akan dimanfaatkan untuk fasilitas publik yang dibutuhkan masyarakat,” katanya. Sementara itu, Menteri ATR/BPN Nusron Wahid menegaskan penetapan tanah sebagai objek reforma agraria merupakan kewenangan Kementerian ATR/BPN, namun penentuan penerima atau subjeknya diserahkan kepada GTRA di daerah.
+            </p>
+            <p>
+                Ia mengungkapkan selama ini masih terdapat persoalan ketidaktepatan sasaran, salah satunya akibat adanya tekanan politik lokal. “Ada yang berhak menerima berdasarkan aturan, tetapi dalam implementasinya banyak tekanan politik lokal. Ini memaksakan orang yang tidak tinggal di sekitar objek untuk menjadi penerima, dan hal ini menciptakan isu ketidakadilan,” katanya. Nusron Wahid mengatakan terdapat beberapa pihak yang berhak menerima tanah <strong>Reforma Agraria</strong>. Antara lain adalah masyarakat yang tinggal di sekitar objek tanah, mereka yang menggantungkan hidup pada tanah, seperti petani dan buruh tani, dan juga masyarakat miskin ekstrem, khususnya desil satu dan dua berdasarkan Data Terpadu Sosial Ekonomi Nasional. Menteri Nusron juga menekankan pentingnya kehati-hatian dalam penyusunan tim GTRA daerah.
+            </p>
+            <p>
+                “Teliti betul timnya. Jangan memasukkan orang hanya karena urusan balas budi politik. Itu bisa menjadi malapetaka bagi kita semua,” katanya. Ia menekankan GTRA harus benar-benar mampu memberikan manfaat bagi masyarakat, terutama dalam upaya pengentasan <strong>kemiskinan</strong> melalui Reforma Agraria.
+                tandasnya.
+            </p>
+        </div>
+
+        <div class="article-source">
+            <strong>Sumber: Antaranews.com (disarikan untuk keperluan arsip SIG Kelurahan Tonja).</strong>
+        </div>
+    </div>
+</main>
+
+<footer>
+    &copy; <span id="year"></span> SIG Kelurahan Tonja · Arsip Berita Pertanahan.
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // transition balik ke halaman lain (sama seperti berita1)
+    (function () {
+        const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return;
+
+        const links = document.querySelectorAll('a[href$=".html"]:not([target="_blank"])');
+        links.forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (!href || href === '' || href === window.location.pathname.split('/').pop()) return;
+                e.preventDefault();
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = href; }, 260);
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>
